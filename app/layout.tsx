@@ -27,13 +27,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <header className="border-b border-border">
-          <div className="mx-auto flex w-full max-w-5xl items-center px-4 py-3 sm:px-6">
-            <Link href="/" className="rounded-md text-sm font-semibold tracking-tight outline-offset-4 focus-visible:outline-2">
+          <div className="mx-auto flex w-full max-w-5xl items-center px-4 py-2.5 sm:py-3 sm:px-6">
+            <Link href="/" className="inline-flex items-center min-h-[36px] rounded-md text-sm font-semibold tracking-tight outline-offset-4 focus-visible:outline-2">
               Git History Visualizer
             </Link>
           </div>
         </header>
-        <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 py-8 sm:px-6">
+        <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 py-6 sm:py-8 sm:px-6">
           <Providers>{children}</Providers>
         </main>
       </body>

@@ -46,17 +46,17 @@ export function CommitTypesChart({ commits }: { commits: readonly { message: str
           tabIndex={0}
           className="mt-2 max-h-64 overflow-auto rounded-md border border-border focus-visible:outline-2 focus-visible:outline-ring"
         >
-          <table className="w-full text-left">
+          <table className="w-full min-w-[260px] sm:min-w-full text-left text-xs sm:text-sm">
             <caption className="sr-only">Commits by type, biggest first.</caption>
             <thead className="sticky top-0 bg-card text-muted-foreground">
               <tr>
-                <th scope="col" className="px-3 py-2 font-medium">
+                <th scope="col" className="px-2.5 py-2 sm:px-3 font-medium">
                   Type
                 </th>
-                <th scope="col" className="px-3 py-2 text-right font-medium">
+                <th scope="col" className="px-2.5 py-2 sm:px-3 text-right font-medium whitespace-nowrap">
                   Commits
                 </th>
-                <th scope="col" className="px-3 py-2 text-right font-medium">
+                <th scope="col" className="px-2.5 py-2 sm:px-3 text-right font-medium whitespace-nowrap">
                   Share
                 </th>
               </tr>
@@ -64,11 +64,11 @@ export function CommitTypesChart({ commits }: { commits: readonly { message: str
             <tbody>
               {counts.map((entry) => (
                 <tr key={entry.type} className="border-t border-border">
-                  <th scope="row" className="px-3 py-1.5 font-normal">
+                  <th scope="row" className="px-2.5 py-1.5 sm:px-3 font-normal">
                     {entry.label}
                   </th>
-                  <td className="px-3 py-1.5 text-right tabular-nums">{formatCount(entry.count)}</td>
-                  <td className="px-3 py-1.5 text-right tabular-nums">{percentOf(entry.count, total)}%</td>
+                  <td className="px-2.5 py-1.5 sm:px-3 text-right tabular-nums whitespace-nowrap">{formatCount(entry.count)}</td>
+                  <td className="px-2.5 py-1.5 sm:px-3 text-right tabular-nums whitespace-nowrap">{percentOf(entry.count, total)}%</td>
                 </tr>
               ))}
             </tbody>

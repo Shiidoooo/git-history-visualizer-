@@ -46,20 +46,20 @@ export function ContributorsChart({ commits }: { commits: readonly CommitInput[]
           tabIndex={0}
           className="mt-2 max-h-64 overflow-auto rounded-md border border-border focus-visible:outline-2 focus-visible:outline-ring"
         >
-          <table className="w-full text-left">
+          <table className="w-full min-w-[380px] sm:min-w-full text-left text-xs sm:text-sm">
             <caption className="sr-only">All contributors, ranked by commit count.</caption>
             <thead className="sticky top-0 bg-card text-muted-foreground">
               <tr>
-                <th scope="col" className="px-3 py-2 font-medium">
+                <th scope="col" className="px-2.5 py-2 sm:px-3 font-medium">
                   Contributor
                 </th>
-                <th scope="col" className="px-3 py-2 text-right font-medium">
+                <th scope="col" className="px-2.5 py-2 sm:px-3 text-right font-medium whitespace-nowrap">
                   Commits
                 </th>
-                <th scope="col" className="px-3 py-2 text-right font-medium">
+                <th scope="col" className="px-2.5 py-2 sm:px-3 text-right font-medium whitespace-nowrap">
                   Lines added
                 </th>
-                <th scope="col" className="px-3 py-2 text-right font-medium">
+                <th scope="col" className="px-2.5 py-2 sm:px-3 text-right font-medium whitespace-nowrap">
                   Lines removed
                 </th>
               </tr>
@@ -67,12 +67,12 @@ export function ContributorsChart({ commits }: { commits: readonly CommitInput[]
             <tbody>
               {ranked.map((contributor) => (
                 <tr key={contributor.key} className="border-t border-border">
-                  <th scope="row" className="px-3 py-1.5 font-normal">
+                  <th scope="row" className="px-2.5 py-1.5 sm:px-3 font-normal truncate max-w-[140px] sm:max-w-none" title={contributor.name}>
                     {contributor.name}
                   </th>
-                  <td className="px-3 py-1.5 text-right tabular-nums">{formatCount(contributor.commits)}</td>
-                  <td className="px-3 py-1.5 text-right tabular-nums">{formatCount(contributor.additions)}</td>
-                  <td className="px-3 py-1.5 text-right tabular-nums">{formatCount(contributor.deletions)}</td>
+                  <td className="px-2.5 py-1.5 sm:px-3 text-right tabular-nums whitespace-nowrap">{formatCount(contributor.commits)}</td>
+                  <td className="px-2.5 py-1.5 sm:px-3 text-right tabular-nums whitespace-nowrap">{formatCount(contributor.additions)}</td>
+                  <td className="px-2.5 py-1.5 sm:px-3 text-right tabular-nums whitespace-nowrap">{formatCount(contributor.deletions)}</td>
                 </tr>
               ))}
             </tbody>

@@ -70,11 +70,11 @@ export function RepoDashboard({ owner, repo }: RepoRef) {
       <>
         {isLoadingMore ? <LoadProgress loaded={commits.length} goal={goal} /> : null}
         {error ? (
-          <div role="alert" className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card p-4">
+          <div role="alert" className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl border border-border bg-card p-3 sm:p-4">
             <p className="text-sm">
               <span className="font-medium">Couldn&apos;t load more commits.</span> {describeError(error).message}
             </p>
-            <Button type="button" size="sm" variant="outline" onClick={retry}>
+            <Button type="button" size="sm" variant="outline" onClick={retry} className="self-start sm:self-auto shrink-0">
               Try again
             </Button>
           </div>
@@ -105,7 +105,7 @@ export function RepoDashboard({ owner, repo }: RepoRef) {
           </div>
         ) : (
           <>
-            <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <dl className="grid grid-cols-2 gap-2.5 sm:gap-3 sm:grid-cols-4">
               <StatTile label="Commits" value={formatCount(summary.commitCount)} />
               <StatTile label="Contributors" value={formatCount(summary.contributorCount)} />
               <StatTile label="Lines added" value={formatCompact(summary.additions)} />
@@ -134,10 +134,10 @@ export function RepoDashboard({ owner, repo }: RepoRef) {
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1">
-        <Link href="/" className="w-fit rounded-md text-sm text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2">
+        <Link href="/" className="inline-flex items-center min-h-[36px] w-fit rounded-md text-sm text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2">
           ← Try another repository
         </Link>
-        <h1 className="text-2xl font-semibold tracking-tight break-words">
+        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight break-all sm:break-words">
           <a
             href={`https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`}
             target="_blank"

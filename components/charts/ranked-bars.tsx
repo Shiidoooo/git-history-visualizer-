@@ -22,15 +22,15 @@ export function RankedBars({ items, ariaLabel }: { items: readonly RankedBarItem
         <li
           key={item.key}
           title={item.title}
-          className="grid grid-cols-[minmax(0,8rem)_minmax(0,1fr)] items-center gap-3 rounded-md px-2 py-1 hover:bg-muted sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)]"
+          className="grid grid-cols-[minmax(0,6.5rem)_minmax(0,1fr)] sm:grid-cols-[minmax(0,10rem)_minmax(0,1fr)] md:grid-cols-[minmax(0,12rem)_minmax(0,1fr)] items-center gap-2 sm:gap-3 rounded-md px-1.5 sm:px-2 py-1.5 sm:py-1 hover:bg-muted"
         >
-          <span className="truncate text-sm">{item.label}</span>
-          <div className="flex items-center gap-2">
+          <span className="truncate text-xs sm:text-sm">{item.label}</span>
+          <div className="flex items-center gap-2 min-w-0">
             <div
               className="h-4 min-w-0.5 rounded-r-[4px] bg-chart-1"
               style={{ width: `calc((100% - ${VALUE_LABEL_SPACE}) * ${item.value / maxValue})` }}
             />
-            <span className="text-sm font-medium tabular-nums">{item.value.toLocaleString("en")}</span>
+            <span className="text-xs sm:text-sm font-medium tabular-nums shrink-0">{item.value.toLocaleString("en")}</span>
           </div>
         </li>
       ))}

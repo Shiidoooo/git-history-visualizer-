@@ -128,8 +128,10 @@ export function TimelineChart({
     const placeRight = bandRight + TOOLTIP_OFFSET + TOOLTIP_WIDTH <= width;
     const releaseLines = shownTooltipReleases.length + (hiddenTooltipReleases > 0 ? 1 : 0);
     const tooltipHeight = TOOLTIP_HEIGHT + releaseLines * TOOLTIP_RELEASE_LINE_HEIGHT;
+    const maxLeft = Math.max(0, width - TOOLTIP_WIDTH);
+    const rawLeft = placeRight ? bandRight + TOOLTIP_OFFSET : bandLeft - TOOLTIP_OFFSET - TOOLTIP_WIDTH;
     tooltipStyle = {
-      left: Math.max(0, placeRight ? bandRight + TOOLTIP_OFFSET : bandLeft - TOOLTIP_OFFSET - TOOLTIP_WIDTH),
+      left: Math.min(maxLeft, Math.max(0, rawLeft)),
       // Never lower than the plot's floor, so the tooltip does not cover the axis labels.
       top: Math.min(Math.max(0, MARGIN.top + y(activeBucket.count) - 4), MARGIN.top + plotHeight - tooltipHeight),
     };
@@ -251,6 +253,8 @@ export function TimelineChart({
                 width={plotWidth}
                 height={plotHeight}
                 fill="transparent"
+                style={{ touchAction: "manipulation" }}
+                onPointerDown={handlePointerMove}
                 onPointerMove={handlePointerMove}
                 onPointerLeave={() => setActiveIndex(null)}
               />
@@ -310,16 +314,16 @@ export function TimelineChart({
           tabIndex={0}
           className="mt-2 max-h-64 overflow-auto rounded-md border border-border focus-visible:outline-2 focus-visible:outline-ring"
         >
-          <table className="w-full text-left">
+          <table className="w-full text-left text-xs sm:text-sm">
             <caption className="sr-only">
               Commits {granularity === "week" ? "per week" : "per day"}. Periods with no commits are left out.
             </caption>
             <thead className="sticky top-0 bg-card text-muted-foreground">
               <tr>
-                <th scope="col" className="px-3 py-2 font-medium">
+                <th scope="col" className="px-2.5 py-2 sm:px-3 font-medium">
                   {granularity === "week" ? "Week starting" : "Day"}
                 </th>
-                <th scope="col" className="px-3 py-2 text-right font-medium">
+                <th scope="col" className="px-2.5 py-2 sm:px-3 text-right font-medium whitespace-nowrap">
                   Commits
                 </th>
               </tr>
@@ -329,17 +333,17 @@ export function TimelineChart({
                 .filter((bucket) => bucket.count > 0)
                 .map((bucket) => (
                   <tr key={bucket.start} className="border-t border-border">
-                    <th scope="row" className="px-3 py-1.5 font-normal">
+                    <th scope="row" className="px-2.5 py-1.5 sm:px-3 font-normal whitespace-nowrap">
                       {formatDay(bucket.start, { withYear: true })}
                     </th>
-                    <td className="px-3 py-1.5 text-right tabular-nums">{formatCount(bucket.count)}</td>
+                    <td className="px-2.5 py-1.5 sm:px-3 text-right tabular-nums whitespace-nowrap">{formatCount(bucket.count)}</td>
                   </tr>
                 ))}
             </tbody>
           </table>
           {markers.shownCount > 0 ? (
-            <table className="w-full border-t border-border text-left">
-              <caption className="px-3 py-2 text-left font-medium text-muted-foreground">Releases in this period</caption>
+            <table className="w-full border-t border-border text-left text-xs sm:text-sm">
+              <caption className="px-2.5 py-2 sm:px-3 text-left font-medium text-muted-foreground">Releases in this period</caption>
               <thead className="sr-only">
                 <tr>
                   <th scope="col">Release</th>
@@ -349,10 +353,10 @@ export function TimelineChart({
               <tbody>
                 {[...markers.byBucket.values()].flat().map((release) => (
                   <tr key={release.tag} className="border-t border-border">
-                    <th scope="row" className="px-3 py-1.5 font-normal">
+                    <th scope="row" className="px-2.5 py-1.5 sm:px-3 font-normal">
                       {release.name}
                     </th>
-                    <td className="px-3 py-1.5 text-right tabular-nums">
+                    <td className="px-2.5 py-1.5 sm:px-3 text-right tabular-nums whitespace-nowrap">
                       {formatDay(release.publishedAt.slice(0, 10), { withYear: true })}
                     </td>
                   </tr>
