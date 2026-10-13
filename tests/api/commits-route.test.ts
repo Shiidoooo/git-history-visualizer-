@@ -2,6 +2,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { GithubApiError } from "@/lib/github/errors";
 
 vi.mock("@/lib/github/commits", () => ({ fetchCommitPage: vi.fn() }));
+// Limiting is covered in rate-limit-route.test.ts; here every request is allowed.
+vi.mock("@/lib/rate-limit/request-limit", () => ({
+  checkRequestRateLimit: vi.fn().mockResolvedValue({ allowed: true }),
+}));
 
 import { GET } from "@/app/api/repo/[owner]/[repo]/commits/route";
 import { fetchCommitPage } from "@/lib/github/commits";

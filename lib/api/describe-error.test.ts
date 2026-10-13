@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ApiClientError } from "./request-api";
+import { ApiClientError, isRetryableError } from "./request-api";
 import { describeError } from "./describe-error";
 
 describe("describeError", () => {
@@ -22,6 +22,19 @@ describe("describeError", () => {
   it("still explains a rate limit when no wait time is known", () => {
     const result = describeError(new ApiClientError("RATE_LIMITED", "limited"));
     expect(result.message).not.toContain("Try again in");
+  });
+
+  it("tells the reader how long to wait after being limited, without blaming GitHub", () => {
+    const result = describeError(new ApiClientError("TOO_MANY_REQUESTS", "slow down", 30));
+    expect(result.title).toBe("Too many requests");
+    expect(result.message).toContain("about a minute");
+    expect(result.message).not.toMatch(/github/i);
+    expect(result.canRetry).toBe(true);
+  });
+
+  it("does not retry a limited request automatically", () => {
+    expect(isRetryableError(new ApiClientError("TOO_MANY_REQUESTS", "slow down", 30))).toBe(false);
+    expect(isRetryableError(new ApiClientError("UPSTREAM_ERROR", "down"))).toBe(true);
   });
 
   it.each(["INVALID_REPO", "INVALID_REQUEST"] as const)("does not offer a retry for %s", (code) => {

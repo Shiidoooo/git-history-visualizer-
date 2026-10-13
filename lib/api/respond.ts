@@ -10,7 +10,7 @@ export function jsonError(
   options: { retryAfterSeconds?: number; details?: unknown[] } = {},
 ): Response {
   const headers = new Headers();
-  if (code === "RATE_LIMITED" && options.retryAfterSeconds) {
+  if ((code === "RATE_LIMITED" || code === "TOO_MANY_REQUESTS") && options.retryAfterSeconds) {
     headers.set("Retry-After", String(options.retryAfterSeconds));
   }
   return Response.json(

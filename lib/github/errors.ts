@@ -3,6 +3,7 @@ export const API_ERROR_CODES = [
   "INVALID_REQUEST",
   "REPO_NOT_FOUND",
   "RATE_LIMITED",
+  "TOO_MANY_REQUESTS",
   "UPSTREAM_ERROR",
   "INTERNAL_ERROR",
 ] as const;
@@ -14,6 +15,7 @@ export const API_ERROR_STATUS: Record<ApiErrorCode, number> = {
   INVALID_REQUEST: 400,
   REPO_NOT_FOUND: 404,
   RATE_LIMITED: 429,
+  TOO_MANY_REQUESTS: 429,
   UPSTREAM_ERROR: 502,
   INTERNAL_ERROR: 500,
 };
@@ -25,6 +27,7 @@ export const API_ERROR_MESSAGE: Record<ApiErrorCode, string> = {
   REPO_NOT_FOUND:
     "Repository not found. It may not exist, or it may be private (only public repositories are supported).",
   RATE_LIMITED: "GitHub's rate limit was reached. Please try again later.",
+  TOO_MANY_REQUESTS: "You are making requests too quickly. Please wait a moment and try again.",
   UPSTREAM_ERROR: "GitHub is not responding right now. Please try again.",
   INTERNAL_ERROR: "Something went wrong on our side. Please try again.",
 };

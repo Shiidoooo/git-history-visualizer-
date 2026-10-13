@@ -33,6 +33,14 @@ export function describeError(error: unknown): ErrorDescription {
         canRetry: true,
       };
     }
+    case "TOO_MANY_REQUESTS": {
+      const wait = error.retryAfterSeconds ? ` Try again in ${formatRetryDelay(error.retryAfterSeconds)}.` : "";
+      return {
+        title: "Too many requests",
+        message: `You're loading repositories faster than we allow.${wait}`,
+        canRetry: true,
+      };
+    }
     case "INVALID_REPO":
     case "INVALID_REQUEST":
       return { title: "That repository isn't valid", message: error.message, canRetry: false };

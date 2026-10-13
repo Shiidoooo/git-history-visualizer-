@@ -23,9 +23,11 @@ const NON_RETRYABLE_CODES: ReadonlySet<ClientErrorCode> = new Set([
   "INVALID_REPO",
   "INVALID_REQUEST",
   "REPO_NOT_FOUND",
+  // An instant automatic retry would only spend the allowance again; the reader retries by hand.
+  "TOO_MANY_REQUESTS",
 ]);
 
-/** Retrying a bad input or a missing repository can never succeed. */
+/** Retrying a bad input, a missing repository or an exhausted allowance straight away can never succeed. */
 export function isRetryableError(error: unknown): boolean {
   return !(error instanceof ApiClientError && NON_RETRYABLE_CODES.has(error.code));
 }

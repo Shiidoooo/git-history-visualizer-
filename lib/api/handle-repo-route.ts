@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { GithubApiError } from "@/lib/github/errors";
 import { repoRefSchema, type RepoRef } from "@/lib/github/repo-ref";
+import { checkRequestRateLimit } from "@/lib/rate-limit/request-limit";
 import { jsonError } from "./respond";
 
 export type RepoRouteContext = {
@@ -19,6 +20,14 @@ export async function handleRepoRoute(
   run: (context: RepoRouteContext) => Promise<Response>,
 ): Promise<Response> {
   const requestId = randomUUID();
+
+  // First, so even malformed requests count against the caller and nothing reaches GitHub once
+  // the allowance is spent.
+  const rateLimit = await checkRequestRateLimit(request);
+  if (!rateLimit.allowed) {
+    console.warn(JSON.stringify({ level: "warn", event: "rate_limited", requestId }));
+    return jsonError("TOO_MANY_REQUESTS", requestId, { retryAfterSeconds: rateLimit.retryAfterSeconds });
+  }
 
   const repoRef = repoRefSchema.safeParse(await params);
   if (!repoRef.success) {
